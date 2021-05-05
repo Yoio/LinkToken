@@ -2,6 +2,7 @@
 pragma solidity >0.6.0 <0.8.0;
 
 /* Interface Imports */
+import { TypeAndVersionInterface } from "../../../v0.6/TypeAndVersionInterface.sol";
 import { IERC20Child } from "./IERC20Child.sol";
 
 /* Contract Imports */
@@ -9,7 +10,7 @@ import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol"
 import { LinkToken } from "../../../v0.6/LinkToken.sol";
 
 /// @dev Access controlled mintable & burnable LinkToken, for use on sidechains and L2 networks.
-contract LinkTokenChild is IERC20Child, AccessControl, LinkToken {
+contract LinkTokenChild is TypeAndVersionInterface, IERC20Child, AccessControl, LinkToken {
   // Using this role the bridge gateway can deposit/withdraw (mint/burn)
   bytes32 public constant BRIDGE_GATEWAY_ROLE = keccak256("BRIDGE_GATEWAY_ROLE");
 
@@ -34,6 +35,16 @@ contract LinkTokenChild is IERC20Child, AccessControl, LinkToken {
   ) {
     require(hasRole(role, _msgSender()), "LinkTokenChild: missing role");
     _;
+  }
+
+  function typeAndVersion()
+    external
+    pure
+    override(LinkToken, TypeAndVersionInterface)
+    virtual
+    returns (string memory)
+  {
+    return "LinkTokenChild 0.0.1";
   }
 
   /**

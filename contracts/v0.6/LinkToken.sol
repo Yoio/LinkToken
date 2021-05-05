@@ -3,8 +3,9 @@ pragma solidity >0.6.0 <0.8.0;
 
 import "./token/LinkERC20.sol";
 import "./ERC677Token.sol";
+import "./TypeAndVersionInterface.sol";
 
-contract LinkToken is LinkERC20, ERC677Token {
+contract LinkToken is TypeAndVersionInterface, LinkERC20, ERC677Token {
   uint private constant TOTAL_SUPPLY = 10**27;
   string private constant NAME = 'ChainLink Token';
   string private constant SYMBOL = 'LINK';
@@ -13,6 +14,16 @@ contract LinkToken is LinkERC20, ERC677Token {
     public
   {
     _onCreate();
+  }
+
+  function typeAndVersion()
+    external
+    pure
+    override
+    virtual
+    returns (string memory)
+  {
+    return "LinkToken 0.0.2";
   }
 
   /**
